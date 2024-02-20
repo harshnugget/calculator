@@ -41,10 +41,10 @@ function operate(firstNumber, operator, secondNumber) {
     }
 }
 
-// Assign variable for display box
+// Assign variable for display text box
 let display = document.querySelector("#display");
 
-// Add event listeners to each number button
+// Add event listeners to each number button and update display with selected number
 document.querySelectorAll(".number").forEach(e => {
     e.addEventListener("click", e => {
         let number = e.target.textContent;
@@ -52,7 +52,19 @@ document.querySelectorAll(".number").forEach(e => {
     });
 });
 
-// Track keystrokes, prevent non-numeric characters
+// Add event listeners to each operation button and update operator variable
+document.querySelectorAll(".operation").forEach(e => {
+    e.addEventListener("click", e => {
+        // If equal sign is clicked perform operation
+        if (e.target.textContent === "=") {
+            // Perform operation
+            return;
+        }
+        operator = e.target.textContent;
+    });
+});
+
+// Track keystrokes, prevent non-numeric characters, update display with number
 display.addEventListener("keydown", e => {
     if (e.key === "Backspace") {
         return;
