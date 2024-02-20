@@ -16,7 +16,7 @@ function multiply(multiplicand, multiplier) {
 function divide(dividend, divisor) {
     // Handle divide by 0
     if (+secondNumber === 0) {
-        return "Cannot divide by zero";
+        return "How dare you!";
     }
     const quotient = dividend / divisor;
     return quotient;
@@ -59,12 +59,19 @@ const subtractSymbol = document.querySelector("#subtract-button").textContent;
 const multiplySymbol = document.querySelector("#multiply-button").textContent;
 const divideSymbol = document.querySelector("#divide-button").textContent;
 const equalSymbol = document.querySelector("#equal-button").textContent;
+const decimalSymbol = document.querySelector("#decimal-button").textContent;
 
 // Clear button
 const clearButton = document.querySelector("#clear-button");
 
 // Event listener for clear button to reset variables and clear display
 clearButton.addEventListener("click", clearAll);
+
+// Decimal button
+const decimalButton = document.querySelector("#decimal-button");
+
+// Event listener to add decimal
+decimalButton.addEventListener("click", e => updateDisplay(e.target.textContent));
 
 // Function to perform arithmetic operations based on the operator
 function operate(operator, firstNumber, secondNumber) {
@@ -114,7 +121,7 @@ display.addEventListener("keydown", e => {
         return;
     }
     e.preventDefault();
-    if ((!/^[0-9]*$/.test(e.key))) {
+    if ((!/^[0-9.]*$/.test(e.key))) {
         return;
     }
     let number = e.key;
@@ -123,6 +130,13 @@ display.addEventListener("keydown", e => {
 
 // Update display with the current number
 function updateDisplay(number) {
+    // Check for decimal
+    if (number === decimalSymbol) {
+        if (display.value.includes(decimalSymbol)) {
+            return;
+        }
+    }
+
     // Overwrite display with the current number
     if (overwriteDisplayValue === true) {
         if (resetSecondNumber === true) {
