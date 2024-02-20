@@ -40,3 +40,17 @@ function operate(firstNumber, operator, secondNumber) {
             return console.log("No operation");
     }
 }
+
+// Add event listeners to each number button
+document.querySelectorAll(".number").forEach(e => e.addEventListener("click", updateDisplay))
+
+// Assign variable for display box
+let display = document.querySelector("#display");
+
+function updateDisplay(e) {
+    // Limit number of characters to 16
+    if (display.value.length >= 16) {
+        return;
+    }
+    display.value += e.target.textContent;
+}
