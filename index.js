@@ -14,6 +14,10 @@ function multiply(multiplicand, multiplier) {
 }
 
 function divide(dividend, divisor) {
+    // Handle divide by 0
+    if (+secondNumber === 0) {
+        return console.log("Cannot divide by 0");
+    }
     const quotient = dividend / divisor;
     return quotient;
 }
@@ -22,11 +26,13 @@ let operator;
 let firstNumber;
 let secondNumber;
 
+// Operator symbols
 const addSymbol = document.querySelector("#add-button").textContent;
 const subtractSymbol = document.querySelector("#subtract-button").textContent;
 const multiplySymbol = document.querySelector("#multiply-button").textContent;
 const divideSymbol = document.querySelector("#divide-button").textContent;
 
+// Function to perform arithmetic operations based on the operator
 function operate(operator, firstNumber, secondNumber) {
     firstNumber = +firstNumber;
     secondNumber = +secondNumber;
@@ -38,20 +44,17 @@ function operate(operator, firstNumber, secondNumber) {
         case multiplySymbol:
             return multiply(firstNumber, secondNumber);
         case divideSymbol:
-            // Handle divide by 0
-            if (+secondNumber === 0) {
-                return console.log("Cannot divide by 0");
-            }
             return divide(firstNumber, secondNumber);
         case "":
-            return console.log("No operation");
+            console.log("No operation");
+            return;
     }
 }
 
-// Assign variable for display input box
+// Display input box
 const display = document.querySelector("#display");
 
-// Add event listeners to each number button and update display with selected number
+// Event listeners for number buttons
 document.querySelectorAll(".number").forEach(e => {
     e.addEventListener("click", e => {
         const number = e.target.textContent;
@@ -60,7 +63,7 @@ document.querySelectorAll(".number").forEach(e => {
     });
 });
 
-// Add event listeners to each operator button
+// Event listeners for operator buttons
 document.querySelectorAll(".operation").forEach(e => {
     e.addEventListener("click", e => {
         // Assign chosen operator to a variable
@@ -74,7 +77,7 @@ document.querySelectorAll(".operation").forEach(e => {
     });
 });
 
-// Track keystrokes, prevent non-numeric characters, update display with number
+// Track keystrokes | Prevent non-numeric characters | Update display with number
 display.addEventListener("keydown", e => {
     if (e.key === "Backspace") {
         return;
@@ -87,12 +90,13 @@ display.addEventListener("keydown", e => {
     updateDisplay(number);
 });
 
-// Initialize variable for overwriting the display value
+// Variable for overwriting the display value
 let overwriteDisplayValue = true;
 
-// Initialize variable for toggling between first and second number assignment
+// Variable for toggling between first and second number assignment
 let activeNumber = "firstNumber";
 
+// Update display with the current number
 function updateDisplay(number) {
     // Overwrite display with the current number
     if (overwriteDisplayValue === true) {
@@ -109,10 +113,11 @@ function updateDisplay(number) {
         display.value += number; 
     }
 
-    // Switches between assigning value to first number and second number
+    // Switch between assigning value to the first and second numbers
     activeNumber === "firstNumber" ? firstNumber = display.value : secondNumber = display.value;
 }
 
+// Handle operators for calculations
 function handleOperators(currentOperator) {
     // Check if operator is equals sign and necessary values are defined
     if (currentOperator === "=" && firstNumber !== undefined && operate !== undefined && secondNumber !== undefined) {
