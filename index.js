@@ -157,7 +157,9 @@ function handleOperators(currentOperator) {
         resetSecondNumber = true;   // Prevents continuous calculations when pressing an operator other than equals
     } else if (currentOperator !== equalSymbol && firstNumber !== undefined) {
         // Update global operator variable and active number
-        operator = currentOperator;
+        if (operator === undefined) {
+            operator = currentOperator;
+        }
         activeNumber = "secondNumber";
         if (operator !== undefined && secondNumber !== undefined && resetSecondNumber === false) {
             // Perform calculation when firstNumber, operator, and secondNumber are defined
@@ -165,5 +167,6 @@ function handleOperators(currentOperator) {
             display.value = firstNumber;
             resetSecondNumber = true;   // Prevents continuous calculations when pressing an operator other than equals
         }
+    operator = currentOperator; // Update operator to current choice
     }
 }
