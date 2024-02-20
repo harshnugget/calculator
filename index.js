@@ -16,7 +16,7 @@ function multiply(multiplicand, multiplier) {
 function divide(dividend, divisor) {
     // Handle divide by 0
     if (+secondNumber === 0) {
-        return console.log("Cannot divide by 0");
+        return "Cannot divide by zero";
     }
     const quotient = dividend / divisor;
     return quotient;
@@ -126,12 +126,14 @@ function handleOperators(currentOperator) {
         display.value = firstNumber;
         activeNumber = "firstNumber";
     } else if (currentOperator !== "=") {
-        // Update global operator variable if not equals sign
+        // Update global operator variable and active number
         operator = currentOperator;
         activeNumber = "secondNumber";
-    } else if (firstNumber !== undefined && operate !== undefined && secondNumber !== undefined) {
-        // Perform calculation when firstNumber, operator, and secondNumber are defined
-        firstNumber = operate(operator, firstNumber, secondNumber);
-        display.value = firstNumber;
+        if (firstNumber !== undefined && operate !== undefined && secondNumber !== undefined) {
+            // Perform calculation when firstNumber, operator, and secondNumber are defined
+            firstNumber = operate(operator, firstNumber, secondNumber);
+            display.value = firstNumber;
+            secondNumber = undefined;
+        }
     }
 }
