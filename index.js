@@ -22,7 +22,7 @@ let firstNumber;
 let operator;
 let secondNumber;
 
-function calculate(firstNumber, operator, secondNumber) {
+function operate(firstNumber, operator, secondNumber) {
     switch (operator) {
         case "+":
             return add(firstNumber, secondNumber);
