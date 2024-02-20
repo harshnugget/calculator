@@ -22,9 +22,36 @@ function divide(dividend, divisor) {
     return quotient;
 }
 
+// Input box
+const display = document.querySelector("#display");
+
+// Variables to be used in the operate function
 let operator;
 let firstNumber;
 let secondNumber;
+
+// Variable for overwriting the display value
+let overwriteDisplayValue;
+
+// Variable for toggling between first and second number assignment
+let activeNumber;
+
+// Variable for resetting second number, under certain conditions, to prevent continuous calculations
+let resetSecondNumber;
+
+// Reset all variables
+function clearAll() {
+    display.value = 0;
+    firstNumber = undefined;
+    secondNumber = undefined;
+    operator = undefined;
+    overwriteDisplayValue = true
+    activeNumber = "firstNumber"
+    resetSecondNumber = false
+}
+
+// Initialize variables
+clearAll();
 
 // Operator symbols
 const addSymbol = document.querySelector("#add-button").textContent;
@@ -32,6 +59,12 @@ const subtractSymbol = document.querySelector("#subtract-button").textContent;
 const multiplySymbol = document.querySelector("#multiply-button").textContent;
 const divideSymbol = document.querySelector("#divide-button").textContent;
 const equalSymbol = document.querySelector("#equal-button").textContent;
+
+// Clear button
+const clearButton = document.querySelector("#clear-button");
+
+// Event listener for clear button to reset variables and clear display
+clearButton.addEventListener("click", clearAll);
 
 // Function to perform arithmetic operations based on the operator
 function operate(operator, firstNumber, secondNumber) {
@@ -52,9 +85,6 @@ function operate(operator, firstNumber, secondNumber) {
     }
 }
 
-// Display input box
-const display = document.querySelector("#display");
-
 // Event listeners for number buttons
 document.querySelectorAll(".number").forEach(e => {
     e.addEventListener("click", e => {
@@ -65,7 +95,7 @@ document.querySelectorAll(".number").forEach(e => {
 });
 
 // Event listeners for operator buttons
-document.querySelectorAll(".operation").forEach(e => {
+document.querySelectorAll(".operator").forEach(e => {
     e.addEventListener("click", e => {
         // Assign chosen operator to a variable
         const currentOperator = e.target.textContent;
@@ -90,15 +120,6 @@ display.addEventListener("keydown", e => {
     let number = e.key;
     updateDisplay(number);
 });
-
-// Variable for overwriting the display value
-let overwriteDisplayValue = true;
-
-// Variable for toggling between first and second number assignment
-let activeNumber = "firstNumber";
-
-// Variable for resetting second number, under certain conditions, to prevent continuous calculations
-let resetSecondNumber = false;
 
 // Update display with the current number
 function updateDisplay(number) {
@@ -134,11 +155,11 @@ function handleOperators(currentOperator) {
         display.value = firstNumber;
         activeNumber = "firstNumber";
         resetSecondNumber = true;   // Prevents continuous calculations when pressing an operator other than equals
-    } else if (currentOperator !== equalSymbol) {
+    } else if (currentOperator !== equalSymbol && firstNumber !== undefined) {
         // Update global operator variable and active number
         operator = currentOperator;
         activeNumber = "secondNumber";
-        if (firstNumber !== undefined && operator !== undefined && secondNumber !== undefined && resetSecondNumber === false) {
+        if (operator !== undefined && secondNumber !== undefined && resetSecondNumber === false) {
             // Perform calculation when firstNumber, operator, and secondNumber are defined
             firstNumber = operate(operator, firstNumber, secondNumber);
             display.value = firstNumber;
