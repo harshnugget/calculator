@@ -97,10 +97,17 @@ let overwriteDisplayValue = true;
 // Variable for toggling between first and second number assignment
 let activeNumber = "firstNumber";
 
+// Variable for resetting second number, under certain conditions, to prevent continuous calculations
+let resetSecondNumber = false;
+
 // Update display with the current number
 function updateDisplay(number) {
     // Overwrite display with the current number
     if (overwriteDisplayValue === true) {
+        if (resetSecondNumber === true) {
+            secondNumber = undefined;
+        }
+        resetSecondNumber = false;
         display.value = number;
         if (overwriteDisplayValue === true) {
             overwriteDisplayValue = false;
@@ -121,20 +128,21 @@ function updateDisplay(number) {
 // Handle operators for calculations
 function handleOperators(currentOperator) {
     // Check if operator is equals sign and necessary values are defined
-    if (currentOperator === equalSymbol && firstNumber !== undefined && operate !== undefined && secondNumber !== undefined) {
+    if (currentOperator === equalSymbol && firstNumber !== undefined && operator !== undefined && secondNumber !== undefined) {
         // Perform calculation and update display
         firstNumber = operate(operator, firstNumber, secondNumber);
         display.value = firstNumber;
         activeNumber = "firstNumber";
+        resetSecondNumber = true;   // Prevents continuous calculations when pressing an operator other than equals
     } else if (currentOperator !== equalSymbol) {
         // Update global operator variable and active number
         operator = currentOperator;
         activeNumber = "secondNumber";
-        if (firstNumber !== undefined && operate !== undefined && secondNumber !== undefined) {
+        if (firstNumber !== undefined && operator !== undefined && secondNumber !== undefined && resetSecondNumber === false) {
             // Perform calculation when firstNumber, operator, and secondNumber are defined
             firstNumber = operate(operator, firstNumber, secondNumber);
             display.value = firstNumber;
-            secondNumber = undefined;
+            resetSecondNumber = true;   // Prevents continuous calculations when pressing an operator other than equals
         }
     }
 }
