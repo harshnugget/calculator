@@ -31,6 +31,7 @@ const addSymbol = document.querySelector("#add-button").textContent;
 const subtractSymbol = document.querySelector("#subtract-button").textContent;
 const multiplySymbol = document.querySelector("#multiply-button").textContent;
 const divideSymbol = document.querySelector("#divide-button").textContent;
+const equalSymbol = document.querySelector("#equal-button").textContent;
 
 // Function to perform arithmetic operations based on the operator
 function operate(operator, firstNumber, secondNumber) {
@@ -120,12 +121,12 @@ function updateDisplay(number) {
 // Handle operators for calculations
 function handleOperators(currentOperator) {
     // Check if operator is equals sign and necessary values are defined
-    if (currentOperator === "=" && firstNumber !== undefined && operate !== undefined && secondNumber !== undefined) {
+    if (currentOperator === equalSymbol && firstNumber !== undefined && operate !== undefined && secondNumber !== undefined) {
         // Perform calculation and update display
         firstNumber = operate(operator, firstNumber, secondNumber);
         display.value = firstNumber;
         activeNumber = "firstNumber";
-    } else if (currentOperator !== "=") {
+    } else if (currentOperator !== equalSymbol) {
         // Update global operator variable and active number
         operator = currentOperator;
         activeNumber = "secondNumber";
