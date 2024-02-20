@@ -18,21 +18,26 @@ function divide(dividend, divisor) {
     return quotient;
 }
 
-let firstNumber;
 let operator;
+let firstNumber;
 let secondNumber;
 
-function operate(firstNumber, operator, secondNumber) {
+const multiplySign = document.querySelector("#multiply-button").textContent;
+const divideSign = document.querySelector("#divide-button").textContent;
+
+function operate(operator, firstNumber, secondNumber) {
+    firstNumber = +firstNumber;
+    secondNumber = +secondNumber;
     switch (operator) {
         case "+":
             return add(firstNumber, secondNumber);
         case "-":
             return subtract(firstNumber, secondNumber);
-        case "*":
+        case multiplySign:
             return multiply(firstNumber, secondNumber);
-        case "/":
+        case divideSign:
             // Handle divide by 0
-            if (secondNumber === 0) {
+            if (+secondNumber === 0) {
                 return console.log("Cannot divide by 0");
             }
             return divide(firstNumber, secondNumber);
@@ -55,11 +60,7 @@ document.querySelectorAll(".number").forEach(e => {
 // Add event listeners to each operation button and update operator variable
 document.querySelectorAll(".operation").forEach(e => {
     e.addEventListener("click", e => {
-        // If equal sign is clicked perform operation
-        if (e.target.textContent === "=") {
-            // Perform operation
-            return;
-        }
+        overwriteDisplayValue = true;
         operator = e.target.textContent;
     });
 });
@@ -77,11 +78,21 @@ display.addEventListener("keydown", e => {
     updateDisplay(number);
 });
 
+// Initialize variable for overwriting the display value
+let overwriteDisplayValue = true;
+
 function updateDisplay(number) {
-    console.log(display.value.length);
     // Limit number of characters to 16
     if (display.value.length >= 16) {
         return;
     }
+
+    // Overwrite display
+    if (display.value === "0" || overwriteDisplayValue === true) {
+        display.value = number;
+        overwriteDisplayValue = false;
+        return;
+    }
+    
     display.value += number;
 }
