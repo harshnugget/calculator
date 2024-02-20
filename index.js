@@ -41,16 +41,35 @@ function operate(firstNumber, operator, secondNumber) {
     }
 }
 
-// Add event listeners to each number button
-document.querySelectorAll(".number").forEach(e => e.addEventListener("click", updateDisplay))
-
 // Assign variable for display box
 let display = document.querySelector("#display");
 
-function updateDisplay(e) {
+// Add event listeners to each number button
+document.querySelectorAll(".number").forEach(e => {
+    e.addEventListener("click", e => {
+        let number = e.target.textContent;
+        updateDisplay(number);
+    });
+});
+
+// Track keystrokes, prevent non-numeric characters
+display.addEventListener("keydown", e => {
+    if (e.key === "Backspace") {
+        return;
+    }
+    e.preventDefault();
+    if ((!/^[0-9]*$/.test(e.key))) {
+        return;
+    }
+    let number = e.key;
+    updateDisplay(number);
+});
+
+function updateDisplay(number) {
+    console.log(display.value.length);
     // Limit number of characters to 16
     if (display.value.length >= 16) {
         return;
     }
-    display.value += e.target.textContent;
+    display.value += number;
 }
