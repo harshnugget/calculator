@@ -140,10 +140,17 @@ function updateDisplay(number) {
     // Overwrite display with the current number
     if (overwriteDisplayValue === true) {
         if (resetSecondNumber === true) {
-            secondNumber = undefined;
+            secondNumber = undefined;   // Prevents continuous calculations when pressing an operator other than equals
         }
         resetSecondNumber = false;
-        display.value = number;
+        
+        // Handle decimal symbols
+        if (number === decimalSymbol){
+            display.value += number;
+        } else {
+            display.value = number;
+        }
+
         if (overwriteDisplayValue === true) {
             overwriteDisplayValue = false;
         }
