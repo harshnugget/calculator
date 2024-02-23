@@ -53,27 +53,26 @@ const resultDisplay = document.querySelector("#result-display");
 // Initialize variables
 clearAll();
 
-// Button symbols
+// Buttons and symbols
+const clearButton = document.querySelector("#clear-button");
+clearButton.addEventListener("click", clearAll);
+
 const addSymbol = document.querySelector("#add-button").textContent;
 const subtractSymbol = document.querySelector("#subtract-button").textContent;
 const multiplySymbol = document.querySelector("#multiply-button").textContent;
 const divideSymbol = document.querySelector("#divide-button").textContent;
 const equalSymbol = document.querySelector("#equal-button").textContent;
-const decimalSymbol = document.querySelector("#decimal-button").textContent;
-const signSymbol = document.querySelector("#sign-button").textContent;
-const deleteSymbol = document.querySelector("#delete-button").textContent;
-
-// Buttons
-const clearButton = document.querySelector("#clear-button");
-clearButton.addEventListener("click", clearAll);
 
 const decimalButton = document.querySelector("#decimal-button");
+const decimalSymbol = decimalButton.textContent;
 decimalButton.addEventListener("click", e => updateResultDisplay(e.target.textContent));
 
 const signButton = document.querySelector("#sign-button")
+const signSymbol = signButton.textContent;
 signButton.addEventListener("click", e => updateResultDisplay(e.target.textContent));
 
 const deleteButton = document.querySelector("#delete-button")
+const deleteSymbol = deleteButton.textContent;
 deleteButton.addEventListener("click", e => updateResultDisplay(e.target.textContent));
 
 // Event listeners for number buttons
@@ -92,7 +91,7 @@ document.querySelectorAll(".operator").forEach(e => {
     });
 });
 
-// Track keystrokes in display input | Prevent non-numeric characters | Update display with number
+// Track keystrokes in display input | Prevent non-numeric characters
 resultDisplay.addEventListener("keydown", e => {
     if (e.key === "Backspace") {
         return;
@@ -101,8 +100,7 @@ resultDisplay.addEventListener("keydown", e => {
     if ((!/^[0-9.]*$/.test(e.key))) {
         return;
     }
-    let number = e.key;
-    updateResultDisplay(number);
+    updateResultDisplay(e.key);
 });
 
 // Handle operators for calculations
@@ -112,35 +110,30 @@ function handleOperators(currentOperator) {
             numbersObj.secondNumber = numbersObj.tempSecondNumber;
         }
         if (numbersObj.secondNumber !== undefined) {
-            numbersObj.tempFirstNumber = numbersObj.firstNumber;
-            numbersObj.firstNumber = operate(operator, numbersObj.firstNumber, numbersObj.secondNumber);
-
-            previousDisplay.value = updatePreviousDisplay(operator, numbersObj.tempFirstNumber, numbersObj.secondNumber);
-
-            resultDisplay.value = numbersObj.firstNumber;
+            executeOperationAndDisplayResult();
             activeNumber = "firstNumber";
         }
     } else if (currentOperator !== equalSymbol) {
         if (!operator) {
             operator = currentOperator;
         }
-
         previousDisplay.value = numbersObj.firstNumber + " " + currentOperator;
-
         if (numbersObj.secondNumber !== undefined || activeNumber === "firstNumber") {
             if (activeNumber !== "firstNumber") {
-                numbersObj.tempFirstNumber = numbersObj.firstNumber;
-                numbersObj.firstNumber = operate(operator, numbersObj.firstNumber, numbersObj.secondNumber);
-
-                previousDisplay.value = updatePreviousDisplay(operator, numbersObj.tempFirstNumber, numbersObj.secondNumber);
-
-                resultDisplay.value = numbersObj.firstNumber;
+                executeOperationAndDisplayResult();
             }
             numbersObj.tempSecondNumber = numbersObj.secondNumber;
             numbersObj.secondNumber = undefined;
         }
         activeNumber = "secondNumber";
         operator = currentOperator; // Update operator to current choice
+    }
+
+    function executeOperationAndDisplayResult() {
+        numbersObj.tempFirstNumber = numbersObj.firstNumber;
+        numbersObj.firstNumber = operate(operator, numbersObj.firstNumber, numbersObj.secondNumber);
+        previousDisplay.value = updatePreviousDisplay(operator, numbersObj.tempFirstNumber, numbersObj.secondNumber);
+        resultDisplay.value = numbersObj.firstNumber;
     }
 }
 
