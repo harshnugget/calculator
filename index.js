@@ -173,6 +173,11 @@ function operate(operator, firstNumber, secondNumber) {
 function updateResultDisplay(number) {
     let overwriteDisplayValue = false;
 
+    // Prevent preceding number with zero
+    if (resultDisplay.value === "0") {
+        overwriteDisplayValue = true;
+    }
+
     if (!numbersObj.firstNumber || (activeNumber === "secondNumber" && !numbersObj.secondNumber)) {
         overwriteDisplayValue = true;
     }
@@ -203,10 +208,6 @@ function updateResultDisplay(number) {
         overwriteDisplayValue = true;
     } else if (number === signSymbol) {
         previousDisplay.value = "";
-        return;
-    }
-
-    if (number === "0" && resultDisplay.value.length === 1) {
         return;
     }
 
