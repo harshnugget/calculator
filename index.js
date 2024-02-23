@@ -42,7 +42,7 @@ let resetSecondNumber;
 // Reset all variables
 function clearAll() {
     display.value = 0;
-    firstNumber = undefined;
+    firstNumber = 0;
     secondNumber = undefined;
     operator = undefined;
     overwriteDisplayValue = true
@@ -191,3 +191,18 @@ function handleOperators(currentOperator) {
     operator = currentOperator; // Update operator to current choice
     }
 }
+
+// Maintain aspect ratio of calculator
+function updateCalculatorHeight() {
+    var calculatorContainer = document.querySelector('.calculator-container');
+    var currentWidth = calculatorContainer.offsetWidth;
+    var aspectRatio = 500 / 300; // Adjust this ratio based on your design
+    var newHeight = currentWidth * aspectRatio;
+    calculatorContainer.style.height = `${newHeight}px`;
+}
+
+// Initial call to set the height
+updateCalculatorHeight();
+
+// Add an event listener to update the height when the window is resized
+window.addEventListener('resize', updateCalculatorHeight);
