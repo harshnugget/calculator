@@ -46,6 +46,15 @@ function clearAll() {
     activeNumber = "firstNumber";
 }
 
+function clearEntry() {
+    if (numbersObj.tempFirstNumber) {
+        clearAll();
+        return;
+    }
+    numbersObj[activeNumber] = 0;
+    resultDisplay.value = 0;
+}
+
 // Display boxes
 const previousDisplay = document.querySelector("#previous-display");
 const resultDisplay = document.querySelector("#result-display");
@@ -56,6 +65,9 @@ clearAll();
 // Buttons and symbols
 const clearButton = document.querySelector("#clear-button");
 clearButton.addEventListener("click", clearAll);
+
+const clearEntryButton = document.querySelector("#clear-entry-button")
+clearEntryButton.addEventListener("click", clearEntry);
 
 const addSymbol = document.querySelector("#add-button").textContent;
 const subtractSymbol = document.querySelector("#subtract-button").textContent;
@@ -158,7 +170,6 @@ function operate(operator, firstNumber, secondNumber) {
 
 // Update display with the current number or result
 function updateResultDisplay(number) {
-    // Initialize to not overwrite
     let overwriteDisplayValue = false;
 
     if (!numbersObj.firstNumber || (activeNumber === "secondNumber" && !numbersObj.secondNumber)) {
@@ -178,7 +189,6 @@ function updateResultDisplay(number) {
         }
     } 
     else if (number === deleteSymbol) {
-        previousDisplay.value = "";
         let absoluteNumber = Math.abs(parseInt(resultDisplay.value, 10)).toString();    // Extract number to get actual length (ignore the sign)
         number = (absoluteNumber.length > 1) ? resultDisplay.value.slice(0, -1) : '';
         if (!number) {
