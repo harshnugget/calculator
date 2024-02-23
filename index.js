@@ -22,14 +22,12 @@ function divide(dividend, divisor) {
     return quotient;
 }
 
-// Input box
-const display = document.querySelector("#display");
-
 // Variables to be used in the operate function
 let operator;
 const numbersObj = {
     firstNumber: undefined,
     secondNumber: undefined,
+    tempFirstNumber: undefined,
     tempSecondNumber: undefined
 }
 
@@ -38,12 +36,19 @@ let activeNumber;
 
 // Reset all variables
 function clearAll() {
-    display.value = 0;
+    resultDisplay.value = 0;
+    previousDisplay.value = "";
+    operator = undefined;
     numbersObj.firstNumber = 0;
     numbersObj.secondNumber = undefined;
-    operator = undefined;
-    activeNumber = "firstNumber"
+    numbersObj.tempFirstNumber = undefined;
+    numbersObj.tempSecondNumber = undefined;
+    activeNumber = "firstNumber";
 }
+
+// Display boxes
+const previousDisplay = document.querySelector("#previous-display");
+const resultDisplay = document.querySelector("#result-display");
 
 // Initialize variables
 clearAll();
@@ -63,20 +68,19 @@ const clearButton = document.querySelector("#clear-button");
 clearButton.addEventListener("click", clearAll);
 
 const decimalButton = document.querySelector("#decimal-button");
-decimalButton.addEventListener("click", e => updateDisplay(e.target.textContent));
+decimalButton.addEventListener("click", e => updateResultDisplay(e.target.textContent));
 
 const signButton = document.querySelector("#sign-button")
-signButton.addEventListener("click", e => updateDisplay(e.target.textContent));
+signButton.addEventListener("click", e => updateResultDisplay(e.target.textContent));
 
 const deleteButton = document.querySelector("#delete-button")
-deleteButton.addEventListener("click", e => updateDisplay(e.target.textContent));
+deleteButton.addEventListener("click", e => updateResultDisplay(e.target.textContent));
 
 // Event listeners for number buttons
 document.querySelectorAll(".number").forEach(e => {
     e.addEventListener("click", e => {
         const number = e.target.textContent;
-        
-        updateDisplay(number);
+        updateResultDisplay(number);
     });
 });
 
@@ -84,16 +88,12 @@ document.querySelectorAll(".number").forEach(e => {
 document.querySelectorAll(".operator").forEach(e => {
     e.addEventListener("click", e => {
         const currentOperator = e.target.textContent;
-
-
-
-        // Perform checks on chosen operator to calculate next value
-        handleOperators(currentOperator);
+        handleOperators(currentOperator);   // Perform checks on chosen operator for calculating next value
     });
 });
 
 // Track keystrokes in display input | Prevent non-numeric characters | Update display with number
-display.addEventListener("keydown", e => {
+resultDisplay.addEventListener("keydown", e => {
     if (e.key === "Backspace") {
         return;
     }
@@ -102,7 +102,7 @@ display.addEventListener("keydown", e => {
         return;
     }
     let number = e.key;
-    updateDisplay(number);
+    updateResultDisplay(number);
 });
 
 // Handle operators for calculations
@@ -112,18 +112,29 @@ function handleOperators(currentOperator) {
             numbersObj.secondNumber = numbersObj.tempSecondNumber;
         }
         if (numbersObj.secondNumber !== undefined) {
+            numbersObj.tempFirstNumber = numbersObj.firstNumber;
             numbersObj.firstNumber = operate(operator, numbersObj.firstNumber, numbersObj.secondNumber);
-            display.value = numbersObj.firstNumber;
+
+            previousDisplay.value = updatePreviousDisplay(operator, numbersObj.tempFirstNumber, numbersObj.secondNumber);
+
+            resultDisplay.value = numbersObj.firstNumber;
             activeNumber = "firstNumber";
         }
     } else if (currentOperator !== equalSymbol) {
         if (!operator) {
             operator = currentOperator;
         }
+
+        previousDisplay.value = numbersObj.firstNumber + " " + currentOperator;
+
         if (numbersObj.secondNumber !== undefined || activeNumber === "firstNumber") {
             if (activeNumber !== "firstNumber") {
+                numbersObj.tempFirstNumber = numbersObj.firstNumber;
                 numbersObj.firstNumber = operate(operator, numbersObj.firstNumber, numbersObj.secondNumber);
-                display.value = numbersObj.firstNumber;
+
+                previousDisplay.value = updatePreviousDisplay(operator, numbersObj.tempFirstNumber, numbersObj.secondNumber);
+
+                resultDisplay.value = numbersObj.firstNumber;
             }
             numbersObj.tempSecondNumber = numbersObj.secondNumber;
             numbersObj.secondNumber = undefined;
@@ -152,8 +163,8 @@ function operate(operator, firstNumber, secondNumber) {
     }
 }
 
-// Update display with the current number
-function updateDisplay(number) {
+// Update display with the current number or result
+function updateResultDisplay(number) {
     // Initialize to not overwrite
     let overwriteDisplayValue = false;
 
@@ -164,24 +175,29 @@ function updateDisplay(number) {
     if (activeNumber === "firstNumber" && numbersObj.secondNumber !== undefined) {
         overwriteDisplayValue = true;
         numbersObj.secondNumber = undefined;
+        previousDisplay.value = "";
     }
 
     if (number === decimalSymbol) {
-        if (display.value.includes(decimalSymbol)) {
+        previousDisplay.value = "";
+        if (resultDisplay.value.includes(decimalSymbol)) {
             return;
         }
-    }
-
-    if (number === deleteSymbol) {
-        // Extract number to get actual length (ignore the sign)
-        let absoluteNumber = Math.abs(parseInt(display.value, 10)).toString();
-        number = (absoluteNumber.length > 1) ? display.value.slice(0, -1) : '';
+    } 
+    else if (number === deleteSymbol) {
+        previousDisplay.value = "";
+        let absoluteNumber = Math.abs(parseInt(resultDisplay.value, 10)).toString();    // Extract number to get actual length (ignore the sign)
+        number = (absoluteNumber.length > 1) ? resultDisplay.value.slice(0, -1) : '';
+        if (!number) {
+            return;
+        }
         overwriteDisplayValue = true;
     }
     
-    if (number === signSymbol && display.value !== "0") {
+    if (number === signSymbol && resultDisplay.value !== "0") {
         overwriteDisplayValue = true;
     } else if (number === signSymbol) {
+        previousDisplay.value = "";
         return;
     }
 
@@ -189,27 +205,42 @@ function updateDisplay(number) {
         numbersObj.tempSecondNumber = undefined;
         switch (number) {
             case signSymbol:
-                if (display.value[0] === "-") {
-                    number = display.value.substring(1);
+                if (resultDisplay.value[0] === "-") {
+                    number = resultDisplay.value.substring(1);
                 } else {
-                    number = "-" + display.value;
+                    number = "-" + resultDisplay.value;
                 }
                 break;
             case decimalSymbol:
-                display.value += number;
+                resultDisplay.value += number;
                 break;
         }
-        display.value = number;
+        resultDisplay.value = number;
     } else {
         // Limit number of characters to 16
-        if (display.value.length >= 16) {
+        if (resultDisplay.value.length >= 16) {
             return;
         }
-        display.value += number; 
+        resultDisplay.value += number; 
     }
 
     // Switch between assigning value to the first and second numbers
-    activeNumber === "firstNumber" ? numbersObj.firstNumber = display.value : numbersObj.secondNumber = display.value;
+    activeNumber === "firstNumber" ? numbersObj.firstNumber = resultDisplay.value : numbersObj.secondNumber = resultDisplay.value;
+}
+
+// Show previous operation
+function updatePreviousDisplay(operator="", firstNumber="", secondNumber="") {
+    let result;
+    if (firstNumber) {
+        result = `${firstNumber}`;
+    }
+    if (operator) {
+        result += ` ${operator} `;
+    } 
+    if (secondNumber) {
+        result += `${secondNumber} = `
+    }
+    return result;
 }
 
 // Maintain aspect ratio of calculator

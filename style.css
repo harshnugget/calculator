@@ -18,8 +18,14 @@ body {
     max-height: 500px;
 }
 
-.display-container,
-.display-container > input {
+.display-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#result-display {
     width: 100%;
     height: 100%;
 }
