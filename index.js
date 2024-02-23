@@ -192,6 +192,7 @@ function updateResultDisplay(number) {
         let absoluteNumber = Math.abs(parseInt(resultDisplay.value, 10)).toString();    // Extract number to get actual length (ignore the sign)
         number = (absoluteNumber.length > 1) ? resultDisplay.value.slice(0, -1) : '';
         if (!number) {
+            clearEntry();
             return;
         }
         overwriteDisplayValue = true;
