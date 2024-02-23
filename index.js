@@ -60,6 +60,8 @@ const multiplySymbol = document.querySelector("#multiply-button").textContent;
 const divideSymbol = document.querySelector("#divide-button").textContent;
 const equalSymbol = document.querySelector("#equal-button").textContent;
 const decimalSymbol = document.querySelector("#decimal-button").textContent;
+const signSymbol = document.querySelector("#sign-button").textContent;
+const deleteSymbol = document.querySelector("#delete-button").textContent;
 
 // Clear button
 const clearButton = document.querySelector("#clear-button");
@@ -72,6 +74,18 @@ const decimalButton = document.querySelector("#decimal-button");
 
 // Event listener to add decimal
 decimalButton.addEventListener("click", e => updateDisplay(e.target.textContent));
+
+// Sign button
+const signButton = document.querySelector("#sign-button")
+
+// Event listener to change sign
+signButton.addEventListener("click", e => updateDisplay(e.target.textContent));
+
+// Delete button
+const deleteButton = document.querySelector("#delete-button")
+
+// Event listener to delete
+deleteButton.addEventListener("click", e => updateDisplay(e.target.textContent));
 
 // Function to perform arithmetic operations based on the operator
 function operate(operator, firstNumber, secondNumber) {
@@ -130,11 +144,30 @@ display.addEventListener("keydown", e => {
 
 // Update display with the current number
 function updateDisplay(number) {
+    // Check for delete
+    if (number === deleteSymbol) {
+        if (display.value.length > 1) {
+            number = display.value.slice(0, display.value.length-1);
+        } else {
+            return;
+        }
+    overwriteDisplayValue = true;
+     }
+
     // Check for decimal
     if (number === decimalSymbol) {
         if (display.value.includes(decimalSymbol)) {
             return;
         }
+    }
+
+    if (number === signSymbol) {
+        // Prevent sign change on 0
+        if (display.value === "0") {
+            console.log("No can do");
+            return;
+        }
+    overwriteDisplayValue = true;
     }
 
     // Overwrite display with the current number
@@ -143,17 +176,25 @@ function updateDisplay(number) {
             secondNumber = undefined;   // Prevents continuous calculations when pressing an operator other than equals
         }
         resetSecondNumber = false;
-        
-        // Handle decimal symbols
-        if (number === decimalSymbol){
-            display.value += number;
-        } else {
-            display.value = number;
+
+        // Handle operators
+        switch (number) {
+            case signSymbol:
+                if (display.value[0] === "-") {
+                    number = display.value.substring(1);
+                    display.value = number;
+                } else {
+                    number = "-" + display.value;
+                    display.value = number;
+                }
+            case decimalSymbol:
+                display.value += number;
+            default:
+                display.value = number;
         }
 
-        if (overwriteDisplayValue === true) {
-            overwriteDisplayValue = false;
-        }
+        // Stop overwriting display value
+        overwriteDisplayValue = false;
     } else {
         // Limit number of characters to 16
         if (display.value.length >= 16) {
