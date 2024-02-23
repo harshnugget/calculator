@@ -194,10 +194,12 @@ function handleOperators(currentOperator) {
 
 // Maintain aspect ratio of calculator
 function updateCalculatorHeight() {
-    var calculatorContainer = document.querySelector('.calculator-container');
-    var currentWidth = calculatorContainer.offsetWidth;
-    var aspectRatio = 500 / 300; // Adjust this ratio based on your design
-    var newHeight = currentWidth * aspectRatio;
+    let calculatorContainer = document.querySelector('.calculator-container');
+    let currentWidth = calculatorContainer.offsetWidth;
+    let maxHeight = getComputedStyle(calculatorContainer).getPropertyValue("max-height").replace("px", "");
+    let maxWidth = getComputedStyle(calculatorContainer).getPropertyValue("max-width").replace("px", "");
+    let aspectRatio = maxHeight / maxWidth;
+    let newHeight = currentWidth * aspectRatio;
     calculatorContainer.style.height = `${newHeight}px`;
 }
 

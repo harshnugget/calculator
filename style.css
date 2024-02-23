@@ -12,8 +12,10 @@ body {
     flex-direction: column;
     border-style: solid;
     width: 300px;
+    max-width: 300px;
     min-width: 180px;
     height: 500px;
+    max-height: 500px;
 }
 
 .display-container,
