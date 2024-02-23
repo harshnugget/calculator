@@ -6,6 +6,7 @@
 
 * {
     box-sizing: border-box;
+    user-select: none;
 }
 
 body {
@@ -79,6 +80,11 @@ body {
     width: 100%;
     background-color: rgb(139, 139, 139);
     border-style: none;
+}
+
+#result-display:disabled,
+#previous-display:disabled {
+    color: inherit;
 }
 
 .row {

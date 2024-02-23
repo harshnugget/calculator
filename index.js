@@ -104,8 +104,8 @@ document.querySelectorAll(".operator").forEach(e => {
     });
 });
 
-// Track keystrokes in display input | Prevent non-numeric characters
-resultDisplay.addEventListener("keydown", e => {
+// Keyboard input
+window.addEventListener("keydown", e => {
     if (e.key === "Backspace") {
         return;
     }
@@ -150,7 +150,7 @@ function handleOperators(currentOperator) {
             return;
         }
         previousDisplay.value = updatePreviousDisplay(operator, numbersObj.tempFirstNumber, numbersObj.secondNumber);
-        resultDisplay.value = numbersObj.firstNumber;
+        resultDisplay.value = numbersObj.firstNumber.toString().slice(0, 16);
     }
 }
 
@@ -162,20 +162,22 @@ function operate(operator, firstNumber, secondNumber) {
     switch (operator) {
         case addSymbol:
             result = add(firstNumber, secondNumber);
-            return result;
+            break;
         case subtractSymbol:
             result = subtract(firstNumber, secondNumber);
-            return result;
+            break;
         case multiplySymbol:
             result = multiply(firstNumber, secondNumber);
-            return result;
+            break;
         case divideSymbol:
             result = divide(firstNumber, secondNumber);
-            return result;
+            break;
         case "":
             console.log("No operation");
             return;
     }
+    result = result.toFixed(16);
+    return +result;
 }
 
 // Update display with the current number or result
@@ -251,7 +253,7 @@ function updateResultDisplay(number) {
 function updatePreviousDisplay(operator="", firstNumber="", secondNumber="") {
     let result;
     if (firstNumber) {
-        result = `${firstNumber}`;
+        result = `${firstNumber.toString().slice(0, 16)}`;
     }
     if (operator) {
         result += ` ${operator} `;
