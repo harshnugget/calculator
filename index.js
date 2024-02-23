@@ -16,7 +16,7 @@ function multiply(multiplicand, multiplier) {
 function divide(dividend, divisor) {
     // Handle divide by 0
     if (+divisor === 0) {
-        return "Cannot divide by zero!";
+        return "ERROR";
     }
     const quotient = dividend / divisor;
     return quotient;
@@ -46,7 +46,7 @@ function clearAll() {
     activeNumber = "firstNumber";
 }
 
-// Rest active number / input
+// Reset active number / input
 function clearEntry() {
     if (numbersObj.tempFirstNumber) {
         clearAll();
@@ -145,6 +145,10 @@ function handleOperators(currentOperator) {
     function executeOperationAndDisplayResult() {
         numbersObj.tempFirstNumber = numbersObj.firstNumber;
         numbersObj.firstNumber = operate(operator, numbersObj.firstNumber, numbersObj.secondNumber);
+        if (numbersObj.firstNumber === "ERROR") {
+            resultDisplay.value = "ERROR DIV BY ZERO";
+            return;
+        }
         previousDisplay.value = updatePreviousDisplay(operator, numbersObj.tempFirstNumber, numbersObj.secondNumber);
         resultDisplay.value = numbersObj.firstNumber;
     }
@@ -154,15 +158,20 @@ function handleOperators(currentOperator) {
 function operate(operator, firstNumber, secondNumber) {
     firstNumber = +firstNumber;
     secondNumber = +secondNumber;
+    let result;
     switch (operator) {
         case addSymbol:
-            return add(firstNumber, secondNumber);
+            result = add(firstNumber, secondNumber);
+            return result;
         case subtractSymbol:
-            return subtract(firstNumber, secondNumber);
+            result = subtract(firstNumber, secondNumber);
+            return result;
         case multiplySymbol:
-            return multiply(firstNumber, secondNumber);
+            result = multiply(firstNumber, secondNumber);
+            return result;
         case divideSymbol:
-            return divide(firstNumber, secondNumber);
+            result = divide(firstNumber, secondNumber);
+            return result;
         case "":
             console.log("No operation");
             return;
