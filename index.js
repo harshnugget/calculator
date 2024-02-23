@@ -262,7 +262,7 @@ function updatePreviousDisplay(operator="", firstNumber="", secondNumber="") {
     return result;
 }
 
-// Maintain aspect ratio of calculator
+// Maintain aspect ratio
 function updateCalculatorHeight() {
     let calculatorContainer = document.querySelector('.calculator-container');
     let currentWidth = calculatorContainer.offsetWidth;
