@@ -46,6 +46,7 @@ function clearAll() {
     activeNumber = "firstNumber";
 }
 
+// Rest active number / input
 function clearEntry() {
     if (numbersObj.tempFirstNumber) {
         clearAll();
@@ -189,10 +190,10 @@ function updateResultDisplay(number) {
         }
     } 
     else if (number === deleteSymbol) {
-        let absoluteNumber = Math.abs(parseInt(resultDisplay.value, 10)).toString();    // Extract number to get actual length (ignore the sign)
+        let absoluteNumber = Math.abs(parseInt(resultDisplay.value, 10)).toString();    // Extract number to get length (ignoring sign)
         number = (absoluteNumber.length > 1) ? resultDisplay.value.slice(0, -1) : '';
         if (!number) {
-            clearEntry();
+            clearEntry();   // Revert number to 0
             return;
         }
         overwriteDisplayValue = true;
@@ -202,6 +203,10 @@ function updateResultDisplay(number) {
         overwriteDisplayValue = true;
     } else if (number === signSymbol) {
         previousDisplay.value = "";
+        return;
+    }
+
+    if (number === "0" && resultDisplay.value.length === 1) {
         return;
     }
 
