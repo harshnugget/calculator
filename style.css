@@ -95,6 +95,7 @@ body {
     border-style:inset;
     border-width: 0.375rem;;
     border-radius: 0.5rem;
+    border-color: rgba(0, 0, 0, 0.5);
     margin: 0.125rem;
     cursor: pointer;
     color: white;
@@ -106,32 +107,27 @@ body {
 #decimal-button {
     position:relative;
     background-color: rgb(134, 182, 221);
-    border-color: rgb(106, 144, 175);
 }
 
 .operator {
     position:relative;
     background-color: rgb(115, 145, 201);
-    border-color: rgb(84, 106, 146);
 }
 
 #equal-button {
     position:relative;
     background-color: rgb(154, 218, 152);
-    border-color: rgb(112, 158, 110);
 }
 
 #delete-button {
     position:relative;
     background-color: rgb(221, 134, 134);
-    border-color: rgb(170, 103, 103);
 }
 
 #clear-button,
 #clear-entry-button {
     position:relative;
     background-color: rgb(221, 215, 134);
-    border-color: rgb(163, 159, 99);
 }
 
 .button-hover:hover:after {
