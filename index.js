@@ -107,13 +107,26 @@ document.querySelectorAll(".operator").forEach(e => {
 // Keyboard input
 window.addEventListener("keydown", e => {
     if (e.key === "Backspace") {
+        updateResultDisplay(deleteSymbol);
         return;
     }
     e.preventDefault();
     if ((!/^[0-9.]*$/.test(e.key))) {
+        // Check if the pressed key is a valid operator
+        if (/^[=+\-*/]$/.test(e.key) || e.key === "Enter") {
+            if (e.key === "/") {
+                handleOperators(divideSymbol);
+            } else if (e.key === "*") {
+                handleOperators(multiplySymbol);
+            } else if (e.key === "Enter") {
+                handleOperators(equalSymbol);
+            } else {
+                handleOperators(e.key);
+            }
+        }
         return;
     }
-    updateResultDisplay(e.key);
+    updateResultDisplay(e.key, true);
 });
 
 // Handle operators for calculations
@@ -182,7 +195,7 @@ function operate(operator, firstNumber, secondNumber) {
 
 // Update display with the current number or result
 function updateResultDisplay(number) {
-    let overwriteDisplayValue = false;
+    overwriteDisplayValue = false;
 
     // Prevent preceding number with zero
     if (resultDisplay.value === "0") {
@@ -252,13 +265,13 @@ function updateResultDisplay(number) {
 // Show previous operation
 function updatePreviousDisplay(operator="", firstNumber="", secondNumber="") {
     let result;
-    if (firstNumber) {
+    if (firstNumber !== undefined) {
         result = `${firstNumber.toString().slice(0, 16)}`;
     }
-    if (operator) {
+    if (operator !== undefined) {
         result += ` ${operator} `;
     } 
-    if (secondNumber) {
+    if (secondNumber !== undefined) {
         result += `${secondNumber} = `
     }
     return result;
