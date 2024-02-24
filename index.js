@@ -106,27 +106,29 @@ document.querySelectorAll(".operator").forEach(e => {
 
 // Keyboard input
 window.addEventListener("keydown", e => {
+    e.preventDefault();
+
     if (e.key === "Backspace") {
         updateResultDisplay(deleteSymbol);
-        return;
-    }
-    e.preventDefault();
-    if ((!/^[0-9.]*$/.test(e.key))) {
-        // Check if the pressed key is a valid operator
-        if (/^[=+\-*/]$/.test(e.key) || e.key === "Enter") {
-            if (e.key === "/") {
-                handleOperators(divideSymbol);
-            } else if (e.key === "*") {
-                handleOperators(multiplySymbol);
-            } else if (e.key === "Enter") {
-                handleOperators(equalSymbol);
-            } else {
-                handleOperators(e.key);
-            }
+    } else if (/^[0-9.]$/.test(e.key)) {
+        updateResultDisplay(e.key);
+    } else if (/^[=+\-*/]$/.test(e.key) || e.key === "Enter") {
+        let key;
+        switch (e.key) {
+            case "/":
+                key = divideSymbol;
+                break;
+            case "*":
+                key = multiplySymbol;
+                break;
+            case "Enter":
+                key = equalSymbol;
+                break;
+            default:
+                key = e.key;
         }
-        return;
+        handleOperators(key);
     }
-    updateResultDisplay(e.key, true);
 });
 
 // Handle operators for calculations
