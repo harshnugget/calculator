@@ -107,8 +107,7 @@ document.querySelectorAll(".operator").forEach(e => {
 // Keyboard input
 window.addEventListener("keydown", e => {
     e.preventDefault();
-
-    console.log(e.keyCode);
+    
     if (e.key === "Backspace") {
         updateResultDisplay(deleteSymbol);
     } else if (/^[0-9.]$/.test(e.key)) {
