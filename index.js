@@ -263,17 +263,3 @@ function updatePreviousDisplay(operator="", firstNumber="", secondNumber="") {
     }
     return result;
 }
-
-// Maintain aspect ratio
-function updateCalculatorHeight() {
-    let calculatorContainer = document.querySelector('.calculator-container');
-    let currentWidth = calculatorContainer.offsetWidth;
-    let maxHeight = getComputedStyle(calculatorContainer).getPropertyValue("max-height").replace("px", "");
-    let maxWidth = getComputedStyle(calculatorContainer).getPropertyValue("max-width").replace("px", "");
-    let aspectRatio = maxHeight / maxWidth;
-    let newHeight = currentWidth * aspectRatio;
-    calculatorContainer.style.height = `${newHeight}px`;
-}
-
-// Add an event listener to update the height when the window is resized
-window.addEventListener('resize', updateCalculatorHeight);
