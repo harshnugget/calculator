@@ -71,12 +71,14 @@ body {
     text-align: right;
     background-color: rgb(187, 187, 187);
     border-style: none;
+    border-radius: 0;
 }
 
 #previous-display {
     text-align: right;
     background-color: rgb(139, 139, 139);
     border-style: none;
+    border-radius: 0;
 }
 
 #result-display:disabled,
