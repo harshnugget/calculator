@@ -67,7 +67,7 @@ body {
 
 #result-display {
     display: flex;
-    font-size: 1.8em;
+    font-size: 1.75em;
     text-align: right;
     background-color: rgb(187, 187, 187);
     border-style: none;
