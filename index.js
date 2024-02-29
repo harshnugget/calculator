@@ -133,6 +133,11 @@ window.addEventListener("keydown", e => {
 
 // Handle operators for calculations
 function handleOperators(currentOperator) {
+    // Validate first number
+    if (isNaN(numbersObj.firstNumber)) {
+        numbersObj.firstNumber = 0;
+    }
+
     if (currentOperator === equalSymbol) {
         if (numbersObj.tempSecondNumber !== undefined && activeNumber === "secondNumber") {
             numbersObj.secondNumber = numbersObj.tempSecondNumber;
@@ -191,8 +196,12 @@ function operate(operator, firstNumber, secondNumber) {
             console.log("No operation");
             return;
     }
-    result = result.toFixed(16);
-    return +result;
+
+    if (result !== "ERROR") {
+        result = result.toFixed(16);
+        return +result;
+    }
+    return result;
 }
 
 // Update display with the current number or result
