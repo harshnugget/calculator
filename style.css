@@ -6,7 +6,9 @@
 
 * {
     font-family: 'DS-Digital', sans-serif;
-    box-sizing: border-box
+    box-sizing: border-box;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
 }
 
 body {
