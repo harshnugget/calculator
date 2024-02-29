@@ -133,12 +133,15 @@ window.addEventListener("keydown", e => {
 
 // Handle operators for calculations
 function handleOperators(currentOperator) {
-    // Validate first number
+    // Validate numbers
     if (isNaN(numbersObj.firstNumber)) {
         numbersObj.firstNumber = 0;
     }
+    if (numbersObj.firstNumber == 0 && numbersObj.secondNumber === undefined) {
+        numbersObj.secondNumber = 0;
+    }
 
-    if (currentOperator === equalSymbol) {
+    if (currentOperator === equalSymbol && operator !== undefined) {
         if (numbersObj.tempSecondNumber !== undefined && activeNumber === "secondNumber") {
             numbersObj.secondNumber = numbersObj.tempSecondNumber;
         }
