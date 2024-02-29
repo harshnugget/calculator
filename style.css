@@ -157,6 +157,7 @@ body {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 1.7vmin;
     text-align: center;
+    color: rgb(139, 132, 122);
 }
 
 @media (max-width: 280px) {
