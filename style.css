@@ -86,6 +86,7 @@ body {
     background-color: rgb(139, 139, 139);
     width: 100%;
     border-style: none;
+    border-radius: initial;
     overflow: hidden;
     flex: 0.7;
 }
@@ -95,6 +96,7 @@ body {
     text-align: right;
     background-color: rgb(187, 187, 187);
     border-style: none;
+    border-radius: initial;
     width: 100%;
     overflow: hidden;
     flex: 1;
