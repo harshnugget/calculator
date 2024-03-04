@@ -235,7 +235,7 @@ function updateResultDisplay(number) {
     else if (number === deleteSymbol) {
         let absoluteNumber = Math.abs(parseInt(resultDisplay.value, 10)).toString();    // Extract number to get length (ignoring sign)
         number = (absoluteNumber.length > 1) ? resultDisplay.value.slice(0, -1) : '';
-        if (!number) {
+        if (!number || isNaN(resultDisplay.value)) {
             clearEntry();   // Revert number to 0
             return;
         }
